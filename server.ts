@@ -17,11 +17,12 @@ const getDirname = () => {
 };
 
 const appDir = getDirname();
+const rootDir = appDir.endsWith('dist') ? path.resolve(appDir, '..') : appDir;
 
 async function startServer() {
   // Serve the built React frontend as static files in production
   if (process.env.NODE_ENV === 'production') {
-    const clientDist = path.resolve(appDir, './dist/client');
+    const clientDist = path.resolve(rootDir, './dist/client');
     app.use(express.static(clientDist));
     app.get('*', (_req, res) => {
       res.sendFile(path.join(clientDist, 'index.html'));
